@@ -9,7 +9,7 @@ This API uses the N:N (many-to-many) table relationship between items and surviv
 
 The image below describes the model architecture of the API.
 
-IMAGE HERE
+![Model Architecture](/model_arch.png)
 
 ## Usage
 
