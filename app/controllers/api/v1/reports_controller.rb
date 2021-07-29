@@ -5,10 +5,10 @@ module Api
 				survivors_count = Survivor.all.count
 				infected_survivors_count = Survivor.where('infected_count >= 3').count
 
-				infected_proportion = 0
+				infected_proportion = 0.0
 
-				if survivors_count != 0
-					infected_proportion = infected_survivors_count / survivors_count.to_f * 100		
+				if survivors_count != 0.0
+					infected_proportion = infected_survivors_count.to_f / survivors_count.to_f * 100.0
 				end
 
 				infected_proportion = infected_proportion.to_s + "%"
@@ -20,10 +20,10 @@ module Api
 				survivors_count = Survivor.all.count
 				non_infected_survivors_count = Survivor.where('infected_count < 3').count
 
-				non_infected_proportion = 0
+				non_infected_proportion = 0.0
 
-				if survivors_count != 0
-					non_infected_proportion = non_infected_survivors_count / survivors_count.to_f * 100		
+				if survivors_count != 0.0
+					non_infected_proportion = non_infected_survivors_count.to_f / survivors_count.to_f * 100.0	
 				end
 
 				non_infected_proportion = non_infected_proportion.to_s + "%"
@@ -37,7 +37,7 @@ module Api
 				begin
 					item = Item.find(params[:id])
 				rescue ActiveRecord::RecordNotFound
-					render json: { status: 'SUCCESS', message: 'Item not found', data: {} }, status: :not_found
+					render json: { status: 'FAILURE', message: 'Item not found', data: {} }, status: :not_found
 					return
 				end
 
@@ -55,7 +55,7 @@ module Api
 					average = items_added / survivors.count.to_f
 				end
 
-				render json: { status: 'SUCCESS', message: 'Average amount of ' + item[:name] + ' per survivor retrieved.', data: average }
+				render json: { status: 'SUCCESS', message: 'Average amount of ' + item[:name] + ' per survivor retrieved.', data: average.to_s }
 			end
 
 			def points_lost

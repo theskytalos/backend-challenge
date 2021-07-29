@@ -19,15 +19,27 @@ module Api
 			def create
 				survivor = Survivor.create(survivor_params)
 
+				params.require(:inventory)
+
 				if survivor.save
 					params.permit(:survivor, :inventory)
 					for item in params[:inventory] do
+
+						unless Item.exists? (item[:id])
+							render json: { status: 'FAILURE', message: 'There is no item with id ' + item[:id].to_s, data: {} }, status: :not_found
+							return
+						end
+
 						SurvivorItem.create({
 							survivor_id: survivor[:id],
 							item_id: item[:id],
 							item_count: item[:item_count]
 						})
 					end
+
+					render json: { status: 'SUCCESS', message: 'Created survivor', data: survivor }, status: :created
+				else
+					render json: { status: 'FAILURE', message: survivor.errors, data: {} }, status: :unprocessable_entity
 				end
 			end
 

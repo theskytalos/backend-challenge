@@ -42,7 +42,7 @@ module Api
 				for item in items_1 do
 					# Checks if the item exists
 					unless Item.exists?(item[:id])
-						render json: { status: 'FAILURE', message: 'The item ' + Item.find(item[:id])[:name] + ' in the first set doesn\'t exist.' , data: {} }, status: :unprocessable_entity
+						render json: { status: 'FAILURE', message: 'The item ' + item[:id] + ' in the first set doesn\'t exist.' , data: {} }, status: :unprocessable_entity
 						return
 					end
 
@@ -88,7 +88,7 @@ module Api
 				for item in items_2 do
 					# Checks if the item exists
 					unless Item.exists?(item[:id])
-						render json: { status: 'FAILURE', message: 'The item ' + Item.find(item[:id])[:name] + ' in the second set doesn\'t exist.' , data: {} }, status: :unprocessable_entity
+						render json: { status: 'FAILURE', message: 'The item ' + item[:id] + ' in the second set doesn\'t exist.' , data: {} }, status: :unprocessable_entity
 						return
 					end
 
@@ -141,7 +141,7 @@ module Api
 					item_to_remove = trader1.survivor_items.where(['item_id = ?', item[:id]]).first
 
 					unless item_to_remove.update(item_count: item_to_remove[:item_count].to_i - item[:amount].to_i)
-						render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: 500
+						render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: :internal_server_error
 						return
 					end
 
@@ -155,7 +155,7 @@ module Api
 					# If the second trader does have the item, it is incremented. A new survivor_items record is created if not.
 					if !item_to_add.nil?
 						unless item_to_add.update(item_count: item_to_add[:item_count].to_i + item[:amount].to_i)
-							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: 500
+							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: :internal_server_error
 							return
 						end
 					else
@@ -166,7 +166,7 @@ module Api
 						})
 
 						unless si.save
-							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: 500
+							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: :internal_server_error
 							return
 						end
 					end
@@ -177,7 +177,7 @@ module Api
 					item_to_remove = trader2.survivor_items.where(['item_id = ?', item[:id]]).first
 
 					unless item_to_remove.update(item_count: item_to_remove[:item_count].to_i - item[:amount].to_i)
-						render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: 500
+						render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: :internal_server_error
 						return
 					end
 
@@ -191,7 +191,7 @@ module Api
 					# If the second trader does have the item, it is incremented. A new survivor_items record is created if not.
 					if !item_to_add.nil?
 						unless item_to_add.update(item_count: item_to_add[:item_count].to_i + item[:amount].to_i)
-							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: 500
+							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: :internal_server_error
 							return
 						end
 					else
@@ -202,7 +202,7 @@ module Api
 						})
 
 						unless si.save
-							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: 500
+							render json: { status: 'FAILURE', message: 'The trade couldn\'t be done.', data: {} }, status: :internal_server_error
 							return
 						end
 					end
